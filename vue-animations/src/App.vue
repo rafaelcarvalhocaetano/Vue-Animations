@@ -33,6 +33,8 @@
       </transition> -->
 
        <transition
+        appear
+
         @before-enter="beforeEnter"
         @enter="enter"
         @after-enter="afterEnter"
