@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { clearInterval } from 'timers';
 export default {
   data() {
     return {
@@ -60,34 +61,47 @@ export default {
   },
   methods: {
     beforeEnter(el) {
-      console.log("TCL: beforeEnter -> el", el)
+      el.style.opacity = 0;
     },
     enter(el, done) {
-      console.log("TCL: enter -> done", done)
-      console.log("TCL: enter -> el", el)
-      done();
+      let count = 0;
+      const interval = setInterval(() => {
+        el.style.opacity = Number(el.style.opacity) + 0.1;
+        count ++;
+
+        if (count > 10) {
+          clearInterval(interval);
+          done();
+        }        
+      }, 300);
     },
     afterEnter(el) {
-      console.log("TCL: afterEnter -> el", el)
     },
     enterCancelled(el) {
-      console.log("TCL: enterCancelled -> el", el)
 
     },
     beforeLeave(el) {
-      console.log("TCL: beforeLeave -> el", el)
+      el.style.transition = 'width 0.5s';
+      el.style.overflow = 'hidden';
+      el.style.whiteSpace = 'nowrap';
     },
     leave(el, done) {
-      console.log("TCL: leave -> done", done)
-      console.log("TCL: leave -> el", el)
-      done();
+      let count = 0;
+      const tamanho = el.offsetWidth;
+      const interval = setInterval(() => {
+        el.style.width = (tamanho * (1 - (count / 10))) + 'px';
+        count ++;
+
+        if (count > 10) {
+          clearInterval(interval);
+          done();
+        }
+      },  300);
     },
     afterLeave(el) {
-      console.log("TCL: afterLeave -> el", el)
 
     },
     leaveCancelled(el) {
-      console.log("TCL: leaveCancelled -> el", el)
     }
   } 
 }
